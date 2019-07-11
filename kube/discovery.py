@@ -61,10 +61,10 @@ def list_ing_by_labels(label_selector) :
 
     if label_selector:
         logger.info(f"Fetching all ingresses matching labels {label_selector}")
-        response = ext.list_ingress_for_all_namespaces()
+        response = ext.list_ingress_for_all_namespaces(label_selector=label_selector)
     else:
         logger.warning("Label selector is empty, returning all ingresses")
-        response = ext.list_ingress_for_all_namespaces(label_selector=label_selector)
-        logger.debug(f"Found: {result}")
+        response = ext.list_ingress_for_all_namespaces()
+        logger.debug(f"Found: {response}")
 
     return response        
