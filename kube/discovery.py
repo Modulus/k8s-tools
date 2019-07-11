@@ -20,9 +20,7 @@ def list_svc_by_labels(label_selector):
     
     """
     logger.info("Initializing kubeconfig")
-
     config.load_kube_config()
-
     v1 = client.CoreV1Api()
 
     if label_selector:
@@ -35,7 +33,7 @@ def list_svc_by_labels(label_selector):
         logger.info(f"Fetching all service with matching labels {label_selector}")
         result = v1.list_service_for_all_namespaces()
 
-        logger.info(f"found: {result}")     
+        logger.debug(f"found: {result}")     
 
     return result
 
@@ -57,15 +55,16 @@ def list_ing_by_labels(label_selector) :
     list: Of dictcs with matching ingresses
     
     """
+    logger.info("Initializing kubeconfig")
     config.load_kube_config()
-
-    v1 = client.CoreV1Api()
-
     ext = client.ExtensionsV1beta1Api()
 
     if label_selector:
+        logger.info(f"Fetching all ingresses matching labels {label_selector}")
         response = ext.list_ingress_for_all_namespaces()
     else:
+        logger.warning("Label selector is empty, returning all ingresses")
         response = ext.list_ingress_for_all_namespaces(label_selector=label_selector)
+        logger.debug(f"Found: {result}")
 
     return response        
