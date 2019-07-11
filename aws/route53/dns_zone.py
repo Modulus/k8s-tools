@@ -34,7 +34,7 @@ class Zone(object):
 
 
 
-def get_hosted_zone(name, private=False) -> str:
+def get_hosted_zone(name, private=False) -> Zone:
 
     client = boto3.client("route53")
 
@@ -44,15 +44,10 @@ def get_hosted_zone(name, private=False) -> str:
     logger.info(zones)
 
     for zone in zones["HostedZones"]:
-        if name in zone["Name"] and zone["Config"]["PrivateZone"] == private:
+        if "name" in zone["Name"] and zone["Config"]["PrivateZone"] == "private":
             logger.info("HIT")
             return Zone(zone["Id"], zone["Name"])
-
+    logging.error(f"Did not find zone {name}")
     return None
 
 
-
-
-zone = get_hosted_zone("aws5.tv2.no", private=False)
-
-logger.info(zone)
