@@ -22,7 +22,7 @@ logging.info("------------------------------------------------------------------
 
 
 valid_verbs = ["get", "update", "add", "delete"]
-valid_resources = ["dns.zone", "k8s.ingress"]
+valid_resources = ["dns.zone", "ingress"]
 
 
 @click.command()
@@ -39,10 +39,10 @@ def cmd(verb, resource, provider, name):
         if verb == "get":
             if resource == "dns.zone":
                 click.echo(dns_zone.get_hosted_zone(name=name, private=False))
-            if resource == "k8s.ingress":
+            if resource == "ingress":
                 click.echo("Listing ingresses in all namespaces")
         if verb == "update":
-           if resource == "k8s.ingress":
+           if resource == "ingress":
                click.echo("Updating kubernetes dns entries based on ingressed")
         if verb == "delete":
             click.echo("Not implemented yet!") 
